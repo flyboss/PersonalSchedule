@@ -1,0 +1,241 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>搜索活动</title>
+    <link rel="stylesheet" href="../../themes/icon.css" />
+    <link rel="stylesheet" href="../../Styles/bootstrap.css" />
+    <link rel="stylesheet" href="../../Styles/style.css" />
+    <style>
+        body {
+            background-color: #fff !important;
+        }
+
+        .box-wrap {
+            background: transparent;
+        }
+
+        .search-div {
+            padding-top: 20px;
+            text-align: center;
+            background-color: transparent;
+        }
+
+            .search_input {
+                width: 250px;
+                height: 42px;
+                left: 21px;
+                padding-left: 15px;
+                padding-right: 57px;
+                border-radius: 42px;
+                border: 2px solid #324b4e;
+                background: #F9F0DA;
+                outline: none;
+                position: relative;
+                transition: .3s linear;
+            }
+
+                .search_input:focus {
+                    width: 375px;
+                }
+
+        button, .search_input {
+            line-height: normal;
+        }
+
+        button, .search_input, select, textarea {
+            font-family: inherit;
+            font-size: 100%;
+            margin: 0;
+        }
+
+        .search-div button {
+            width: 42px;
+            height: 42px;
+            background: none;
+            border: none;
+            position: relative;
+            top: 0;
+            left: -29px;
+            right: 0;
+        }
+
+
+        .auto::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .auto::-webkit-scrollbar-button {
+            background-color: #eee;
+        }
+
+        .auto::-webkit-scrollbar-track {
+            background: #fff;
+        }
+
+        .auto::-webkit-scrollbar-track-piece {
+            background: #fff;
+        }
+
+        .auto::-webkit-scrollbar-thumb {
+            background: #666;
+            border-radius: 4px;
+        }
+
+        .auto::-webkit-scrollbar-corner {
+            background: #eee;
+        }
+
+        .auto {
+            margin: 0 50%;
+            left: -120px;
+            width: 240px;
+            max-height: 280px;
+            border: 1px solid #dedede;
+            border-top: none;
+            position: absolute;
+            overflow-y: scroll;
+            z-index: 99999;
+        }
+
+        .auto_out {
+            width: 228px;
+            height: 26px;
+            line-height: 26px;
+            padding-left: .5em;
+            color: #000;
+            background: #fff;
+            overflow: hidden;
+            white-space: nowrap;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            opacity: 0.8;
+        }
+
+            .auto_out:hover {
+                background: #7BA7AB;
+                cursor: pointer;
+            }
+    </style>
+
+    <script src="../../Scripts/jquery.min.js"></script>
+    <script src="../../Scripts/jquery.easing.1.3.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
+    <script src="../../Scripts/main.js"></script>
+    <script>
+        var setSearchInput = function(e){
+            $("#search_input").val(e.innerHTML);
+            $("#auto").addClass("hidden");
+        }
+        var getAutoOut = function (s) {
+            var auto_out = $("<div class=\"auto_out\" onclick=\"setSearchInput(this);\"></div>");
+            auto_out.html(s);
+            return auto_out;
+        }
+        var fetchToAuto = function () {
+            var search_input = $("#search_input").val();
+            if (search_input == "") {
+                $("#auto").addClass("hidden");
+                return;
+            }
+            $.post(
+                getUrlPrefix(window.location.href) + "/Search/FetchTitles",
+                {
+                    title: search_input
+                },
+                function (data) {
+                    json = data;
+                    $("#auto").removeClass("hidden");
+                    var completement = JSON.parse(json)
+                    $("#auto").html("");
+                    completement.forEach(function (c) {
+                        $("#auto").append(getAutoOut(c));
+                    });
+                });
+        }
+    </script>
+</head>
+<body>
+    <style>
+    </style>
+    <script>
+        
+    </script>
+    <form>
+        <div class="box-wrap">
+            <header role="banner" id="fh5co-header" style="background-image:url('/img/header.jpg')">
+                <div class="container">
+                    <nav class="navbar navbar-default" style="background:rgba(0,0,0,0)">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="fh5co-navbar-brand">
+                                    <span class="logo"><a href="/PersonalSchedule/Index">日程中心</a></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="nav text-center">
+                                    <li><a href="/PersonalSchedule/Cal">我的日历</a></li>
+                                    <li><a href="/EventCentre/NewEvent">创建活动</a></li>
+                                    <li><a href="/Search/Index">搜索活动</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul class="social">
+                                    <li>
+                                        <a href="/Search/Home">
+                                            <img src="/img/user/@Session["login_id"]_.png" onerror="imgThisErrorSrc(this,'/img/default/default-user-0.png')" class="my-img-round" alt="(。・`ω´・)" width="48" height="48" />
+                                            <span class="user-name">@Session["login_name"]</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="/PersonalSchedule/Index"><span class="glyphicon glyphicon-log-in" id="logout_btn">返回</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+            <div class="search-div">
+                <input id="search_input" class="search_input" autocomplete="off" disableautocomplete type="text" placeholder="搜索从这里开始..." oninput="fetchToAuto()">
+                <button type="button"><span class="glyphicon glyphicon-search" onclick="fetchEvents()"></span></button>
+                <div class="auto hidden" id="auto">
+                </div>
+                <div class="col-md-offset-2 col-md-8" id="event_list">
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-2">
+                        <span class="glyphicon glyphicon-fast-backward" onclick="searchEventsFirst()"></span>
+                        <span class="glyphicon glyphicon-chevron-left" onclick="searchEventsPre()"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" id="current_page" style="width:42px" value="1" />
+                        <label id="sum_page">/1</label>
+                        <span class="glyphicon glyphicon-play" onclick="searchEventsGoTo()"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="glyphicon glyphicon-chevron-right" onclick="searchEventsNext()"></span>
+                        <span class="glyphicon glyphicon-fast-forward" onclick="searchEventsLast()"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+    </script>
+    <script>
+        $(document).click(function (e) {
+            v_class = $(e.target).attr('class');
+            if (v_class != "search_input") {
+                $("#auto").addClass("hidden");
+            }
+            else if ($("#search_input").val() != "") {
+                $("#auto").removeClass("hidden");
+            }
+        });
+    </script>
+</body>
+</html>

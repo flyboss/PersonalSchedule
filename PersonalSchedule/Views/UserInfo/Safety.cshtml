@@ -1,0 +1,137 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>安全管理</title>
+    <link rel="stylesheet" href="/themes/default/easyui.css" />
+    <link rel="stylesheet" href="/themes/icon.css" />
+    <link rel="stylesheet" href="/Styles/demo.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.css" />
+    <link rel="stylesheet" href="/Styles/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Styles/style.css" />
+    <style>
+    </style>
+
+    <script src="/Scripts/jquery.min.js"></script>
+    <script src="/Scripts/jquery.easing.1.3.js"></script>
+    <script src="/Scripts/jquery.waypoints.min.js"></script>
+    <script src="/Scripts/jquery.easyui.min.js"></script>
+    <script src="/Scripts/underscore-min.js"></script>
+    <script src="/Scripts/moment.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/main.js"></script>
+    <script>
+        var handleUrl = window.location.href;
+    </script>
+</head>
+<body>
+    <form>
+        <div class="box-wrap">
+            <header role="banner" id="fh5co-header" style="background-image:url('/img/header.jpg')">
+                <div class="container">
+                    <nav class="navbar navbar-default" style="background:rgba(0,0,0,0)">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="fh5co-navbar-brand">
+                                    <span class="logo"><a href="/PersonalSchedule/Index">日程中心</a></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="nav text-center">
+                                    <li><a href="/PersonalSchedule/Cal">我的日历</a></li>
+                                    <li><a href="/EventCentre/NewEvent">创建活动</a></li>
+                                    <li><a href="/Search/Index">搜索活动</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul class="social">
+                                    <li>
+                                        <a href="/Search/Home">
+                                            <img src="/img/user/@Session["login_id"]_.png" onerror="imgThisErrorSrc(this,'/img/default/default-user-0.png')" class="my-img-round" alt="(。・`ω´・)" width="48" height="48" />
+                                            <span class="user-name">@Session["login_name"]</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="/PersonalSchedule/Index"><span class="glyphicon glyphicon-log-in" id="logout_btn">返回</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+            <div class="container">
+                <script>
+                    var postChangePwd = function () {
+                        if ($('#new_pwd').val() != $('#new_pwd_confirm').val()) {
+                            $('#register_errorMessage').text("*两次密码输入不匹配，请重新输入");
+                            $('#new_pwd_confirm').val("");
+                            $('#new_pwd_confirm').focus();
+                            return;
+                        }
+                        var pw = $('#new_pwd').val();
+                        if (pw.length < 5) {
+                            $('#register_errorMessage').text("*密码长度必须超过五个字符");
+                            $('#new_pwd').val("");
+                            $('#new_pwd_confirm').val("");
+                            $('#new_pwd').focus();
+                            return;
+                        }
+                        if (pw.length > 100) {
+                            $('#register_errorMessage').text("*密码长度太长");
+                            $('#new_pwd').val("");
+                            $('#new_pwd_confirm').val("");
+                            $('#new_pwd').focus();
+                            return;
+                        }
+                        $.post(
+                            getUrlPrefix(window.location.href) + "/UserInfo/ChangePwd",
+                            {
+                                origin_pwd: $('#origin_pwd').val(),
+                                new_pwd: $('#new_pwd').val()
+                            },
+                            function (data) {
+                                $('#register_errorMessage').text(data);
+                                $('#origin_pwd').val("");
+                                $('#new_pwd').val("");
+                                $('#new_pwd_confirm').val("");
+                            }
+                            );
+                    }
+                </script>
+                <div class="col-md-8 col-md-offset-2">
+                    <span id="register_errorMessage" class="errorMessage"></span>
+                    <div class="form-group row">
+                        <label for="register_pwd" class="col-sm-2 control-label">原密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="origin_pwd" required="required" placeholder="您的密码" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="register_pwd" class="col-sm-2 control-label">新密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="new_pwd" required="required" placeholder="您的密码" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="register_pwd_confirm" class="col-sm-2 control-label">确认</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" required="required" id="new_pwd_confirm" placeholder="确认您的密码" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-10">
+                            <input type="button" class="btn btn-warning" value="修改" onclick="postChangePwd()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+    </script>
+</body>
+
+</html>

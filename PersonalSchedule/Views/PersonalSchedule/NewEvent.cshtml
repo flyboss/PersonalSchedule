@@ -1,0 +1,154 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>创建活动</title>
+    <link rel="stylesheet" href="/themes/default/easyui.css" />
+    <link rel="stylesheet" href="/themes/icon.css" />
+    <link rel="stylesheet" href="/Styles/demo.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap-clockpicker.min.css">
+    <link rel="stylesheet" href="/Styles/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Styles/jquery.qeditor.css" />
+    <link rel="stylesheet" href="/Styles/style.css" />
+    <style type="text/css" media="screen">
+        .textarea {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border linear .2s, box-shadow linear .2s;
+            -moz-transition: border linear .2s, box-shadow linear .2s;
+            -o-transition: border linear .2s, box-shadow linear .2s;
+            transition: border linear .2s, box-shadow linear .2s;
+            padding: 4px 6px;
+            font-size: 14px;
+            line-height: 20px;
+            color: #555555;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            vertical-align: middle;
+            outline: none;
+            height: 400px;
+        }
+    </style>
+    <script src="/Scripts/jquery.min.js"></script>
+    <script src="/Scripts/jquery.easing.1.3.js"></script>
+    <script src="/Scripts/jquery.waypoints.min.js"></script>
+    <script src="/Scripts/jquery.easyui.min.js"></script>
+    <script src="/Scripts/jquery.qeditor.js"></script>
+    <script src="/Scripts/underscore-min.js"></script>
+    <script src="/Scripts/moment.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/laydate.js"></script>
+    <script src="/Scripts/bootstrap-clockpicker.min.js"></script>
+    <script src="/Scripts/main.js"></script>
+</head>
+<body>
+    <form>
+        <div class="box-wrap">
+            <header role="banner" id="fh5co-header" style="background-image:url('/img/header.jpg')">
+                <div class="container">
+                    <nav class="navbar navbar-default" style="background:rgba(0,0,0,0)">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="fh5co-navbar-brand">
+                                    <span class="logo"><a href="/PersonalSchedule/Index">日程中心</a></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="nav text-center">
+                                    <li><a href="/PersonalSchedule/Cal">我的日历</a></li>
+                                    <li><a href="/PersonalSchedule/NewEvent">创建活动</a></li>
+                                    <li><a href="/PersonalSchedule/Search">搜索活动</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul class="social">
+                                    <li>
+                                        <a href="#">
+                                            <img src="/img/user/@Session["login_id"]_.png" onerror="imgThisErrorSrc(this,'/img/default/default-user-0.png')" class="my-img-round" alt="(。・`ω´・)" width="48" height="48" />
+                                            <span class="user-name">html</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="/PersonalSchedule/Index"><span class="glyphicon glyphicon-log-in" id="logout_btn">返回</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+            <div class="container">
+                <div class="col-md-8 new-event-left-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="glyphicon glyphicon-time new-event-icons"></span>
+                            <input type="button" class="btn btn-primary" onclick="addActionSubmitDiv()" value="添加时间" />
+                        </div>
+                        <div class="col-md-6">
+                            <span class="glyphicon glyphicon-user new-event-icons"></span>
+                            <input type="button" id="input_event_auth" name="auth_btn_pub" class="btn btn-success" value="公开" 
+                                    onclick="changeThisEventAuthBtn(this);" onmouseover="changeThisValue(this,'设为私有');" onmouseout="changeThisValue(this,'公开发布');"/>
+                        </div>
+                    </div>
+                    <div class="row time-list-div" id="time_list_div"></div>
+                    <div class="row text-editer-div">
+                        <div class="row control-group">
+                            <label class="control-label col-md-2" for="input_event_title">活动标题：</label>
+                            <div class="controls col-md-10">
+                                <input type="text" class="form-control" id="input_event_title" placeholder="请输入活动标题">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="controls">
+                                <textarea id="input_event_content" name="body" class="textarea" placeholder="在这里写点什么..."></textarea>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="controls">
+                                <input type="button" class="btn btn-success" id="submit" onclick="create_event_btn_func(handleUrl)" value="提交" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-md-offset-1 new-event-right-body">
+                    <div class="row">
+                        <span class="glyphicon glyphicon-tags new-event-icons"></span>
+                        <input type="button" class="btn btn-primary" onclick="addLinkSubmitDiv()" value="添加链接" />
+                    </div>
+                    <div class="row link-list-div" id="link_list_div">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        var handleUrl = window.location.href;
+        var default_time = "9:00";
+        var default_date = "2017-06-30";
+        !function () {
+            laydate.skin('default');
+        }();
+
+        $('.clockpicker').clockpicker()
+            .find('input').change(function () {
+                console.log(this.value);
+            });
+        var input = $('#single-input').clockpicker({
+            placement: 'bottom',
+            align: 'left',
+            autoclose: true,
+            'default': 'now'
+        });
+        addActionSubmitDiv();
+
+        $("#input_event_content").qeditor({});
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>好友管理</title>
+    <link rel="stylesheet" href="/themes/default/easyui.css" />
+    <link rel="stylesheet" href="/themes/icon.css" />
+    <link rel="stylesheet" href="/Styles/demo.css" />
+    <link rel="stylesheet" href="/Styles/bootstrap.css" />
+    <link rel="stylesheet" href="/Styles/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Styles/style.css" />
+    <style>
+        .friend-show-item{
+            padding-bottom:5px;
+            border-bottom: 1px solid #808080;
+        }
+        .friend-show div{
+            overflow:hidden;
+            white-space:nowrap;
+            text-align:left;
+        }
+    </style>
+
+    <script src="/Scripts/jquery.min.js"></script>
+    <script src="/Scripts/jquery.easing.1.3.js"></script>
+    <script src="/Scripts/jquery.waypoints.min.js"></script>
+    <script src="/Scripts/jquery.easyui.min.js"></script>
+    <script src="/Scripts/underscore-min.js"></script>
+    <script src="/Scripts/moment.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/main.js"></script>
+    <script>
+        var handleUrl = window.location.href;
+    </script>
+</head>
+<body>
+    <form>
+        <div class="box-wrap">
+            <header role="banner" id="fh5co-header" style="background-image:url('/img/header.jpg')">
+                <div class="container">
+                    <nav class="navbar navbar-default" style="background:rgba(0,0,0,0)">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="fh5co-navbar-brand">
+                                    <span class="logo"><a href="/PersonalSchedule/Index">日程中心</a></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="nav text-center">
+                                    <li><a href="/PersonalSchedule/Cal">我的日历</a></li>
+                                    <li><a href="/EventCentre/NewEvent">创建活动</a></li>
+                                    <li><a href="/Search/Index">搜索活动</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul class="social">
+                                    <li>
+                                        <a href="/Search/Home">
+                                            <img src="/img/user/@Session["login_id"]_.png" onerror="imgThisErrorSrc(this,'/img/default/default-user-0.png')" class="my-img-round" alt="(。・`ω´・)" width="48" height="48" />
+                                            <span class="user-name">@Session["login_name"]</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="/PersonalSchedule/Index"><span class="glyphicon glyphicon-log-in" id="logout_btn">返回</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+            <div class="container">
+                <div class="col-md-10 col-md-offset-1 friend-show" id="followed_div">
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        $.post(
+            getUrlPrefix(window.location.href) + "/UserInfo/FetchFollowed",
+            {},
+            function (data) {
+                console.log(data);
+                searchFriendList = JSON.parse(data);
+                searchFriendList.forEach(function (f) {
+                    if (f.e_id != "") {
+                        new_f_str = "\
+                    <div class=\"row friend-show-item\">\
+                        <div class=\"col-md-3\">\
+                            <span class=\"glyphicon glyphicon-user\"></span>\
+                            <label class=\"control-label label-over-hidden\" onclick=\"goToUserHomeByUId(\'" + f.u_id + "\');\">" + f.u_name + "#" + f.u_id + "</label>\
+                        </div>\
+                        <div class=\"col-md-5\">\
+                            <label class=\"control-label col-md-4\">最新动态：</label>\
+                            <label class=\"control-label col-md-8 label-over-hidden\" onclick=\"goToEventByEId(\'" + f.e_id + "\');\">" + f.e_title + "</label>\
+                        </div>\
+                        <div class=\"col-md-4\">\
+                            <span class=\"glyphicon glyphicon-time\"></span>\
+                            <label class=\"control-label label-over-hidden\">" + f.e_time + "</label>\
+                        </div>\
+                    </div>"
+                    }
+                    else {
+                        new_f_str = "\
+                    <div class=\"row friend-show-item\">\
+                        <div class=\"col-md-3\">\
+                            <span class=\"glyphicon glyphicon-user\"></span>\
+                            <label class=\"control-label label-over-hidden\" onclick=\"goToUserHomeByUId(\'" + f.u_id + "\');\">" + f.u_name + "#" + f.u_id + "</label>\
+                        </div>\
+                        <div class=\"col-md-5\">\
+                            <label class=\"control-label col-md-4\">最新动态：</label>\
+                            <label class=\"control-label col-md-8 label-over-hidden\">没有新动态</label>\
+                        </div>\
+                    </div>"
+                    }
+                    $("#followed_div").append($(new_f_str));
+                })
+            })
+    </script>
+</body>
+
+</html>
