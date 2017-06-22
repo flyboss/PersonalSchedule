@@ -8,11 +8,20 @@ using ModelLib;
 using ModelLib.Tools;
 using Newtonsoft.Json.Linq;
 using CRUDLib;
+using System.Runtime.InteropServices;
 
 namespace SeviceLib
 {
     public class EventCentreService
     {
+
+        [DllImport("myTools.dll", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int ToolsIsInnerLink(StringBuilder str);
+
+
+        [DllImport("myTools.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr ToolsFormLinkSrc2(StringBuilder str, int flagIsInnerLink);
+
         public static string AddNewEventByInputJson(Model1 db, string login_id, string json_input)
         {
             string new_e_id = null;
@@ -109,12 +118,14 @@ namespace SeviceLib
                 {
                     JObject jo_link = (JObject)ja_links[i];
                     string l_src = jo_link["src"].ToString();
-                    bool flagIsInnerLink = MyTools.isInnerLink(l_src);
+                    StringBuilder sb = new StringBuilder(l_src);
+                    int flagIsInnerLink = ToolsIsInnerLink(sb);
                     link link = new link();
                     link.e_id = _event.e_id;
                     link.l_title = jo_link["title"].ToString();
-                    link.l_src = MyTools.formLinkSrc(l_src, flagIsInnerLink);
-                    if (flagIsInnerLink) link.l_type = "inn";
+                    IntPtr intPtr = ToolsFormLinkSrc2(sb, flagIsInnerLink);
+                    link.l_src = Marshal.PtrToStringAnsi(intPtr);
+                    if (flagIsInnerLink > 0) link.l_type = "inn";
                     else link.l_type = "out";
                     link.l_content = "";
                     linkList.Add(link);

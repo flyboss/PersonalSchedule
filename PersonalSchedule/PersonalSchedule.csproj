@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -365,6 +366,10 @@
     <ProjectReference Include="..\SeviceLib\SeviceLib.csproj">
       <Project>{9b5868fa-cb17-43bd-9e22-0a8a919f477d}</Project>
       <Name>SeviceLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToolsLib\ToolsLib.csproj">
+      <Project>{e23c7f71-f493-4ff3-8b4f-920e46c36f69}</Project>
+      <Name>ToolsLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
