@@ -8,7 +8,6 @@ using SeviceLib;
 using EncryptLib;
 using System.Runtime.InteropServices;
 using System.Text;
-using PrimaryLib;
 namespace PersonalSchedule.Controllers
 {
     public class TestController : Controller
@@ -22,13 +21,6 @@ namespace PersonalSchedule.Controllers
             return View();
         }
 
-        public JsonResult SendData()
-        {
-            Demo demo = new Demo();
-            int id = 123456789;
-            long newid=demo.getNextID(id);
-            return Json(new { count = newid });
-        }
         //[DllImport("myTools.dll", CallingConvention = CallingConvention.Cdecl)]
         //public extern static int ToolsIsInnerLink(StringBuilder str);
 
