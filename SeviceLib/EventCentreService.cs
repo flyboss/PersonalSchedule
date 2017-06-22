@@ -9,7 +9,7 @@ using ModelLib.Tools;
 using Newtonsoft.Json.Linq;
 using CRUDLib;
 using System.Runtime.InteropServices;
-
+using PrimaryLib;
 namespace SeviceLib
 {
     public class EventCentreService
@@ -30,7 +30,14 @@ namespace SeviceLib
                 JObject jo_main = JObject.Parse(json_input);
                 string max_e_id = db._event.Max(e => e.e_id);
                 if (max_e_id == null) max_e_id = "0";
-                new_e_id = MyTools.getNewEId(max_e_id);
+
+
+                int maxid = int.Parse(max_e_id);
+                Demo demo = new Demo();
+                long newid = demo.getNextID(maxid);
+                string idtemp = "00000000000000000000000000000000000000000" + newid;
+
+                new_e_id = idtemp.Substring(idtemp.Length - 40);
                 _event _event = new _event();
                 _event.e_id = new_e_id;
                 _event.u_id = login_id;
