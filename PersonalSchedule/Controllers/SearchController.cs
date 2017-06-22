@@ -40,7 +40,7 @@ namespace PersonalSchedule.Controllers
         {
             if (Request["title"] == null || Session["login_id"] == null)
             {
-                //return "[]";
+                return "[]";
             }
             string login_id = "guest";//Session["login_id"].ToString();
             string title = Request["title"].ToString();
