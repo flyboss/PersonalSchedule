@@ -11,6 +11,7 @@ using PersonalSchedule.Models;
 using ModelLib;
 using System.Data.Entity;
 using SeviceLib;
+using EncryptLib;
 
 namespace PersonalSchedule.Controllers
 {
@@ -239,9 +240,10 @@ namespace PersonalSchedule.Controllers
             {
                 return "网络异常，请重新登录";
             }
+            myMD5 m1 = new myMD5();
             string login_id = Session["login_id"].ToString();
-            string origin_pwd = Request["origin_pwd"];
-            string new_pwd = Request["new_pwd"];
+            string origin_pwd = m1.getMD5(Request["origin_pwd"]);
+            string new_pwd = m1.getMD5(Request["new_pwd"]);
             return UserInfoService.ChangePwd(db, login_id, origin_pwd, new_pwd);
         }
 

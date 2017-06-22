@@ -354,6 +354,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EncryptLib\EncryptLib.vcxproj">
+      <Project>{34827bba-9ea5-4f94-9e94-a13016efb9be}</Project>
+      <Name>EncryptLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ModelLib\ModelLib.csproj">
       <Project>{938d5bcd-5b9a-4d26-9593-be387cad9dfa}</Project>
       <Name>ModelLib</Name>

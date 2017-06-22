@@ -8,6 +8,7 @@ using ModelLib;
 using ModelLib.Tools;
 using SeviceLib;
 using PersonalSchedule.Models;
+using EncryptLib;
 
 namespace PersonalSchedule.Controllers
 {
@@ -30,15 +31,16 @@ namespace PersonalSchedule.Controllers
         public ActionResult IndexPost()
         {
             string error_message = null;
+            myMD5 m1 = new myMD5();
             switch (Request["operate"])
             {
                 case "login":
-                    error_message = Login(Request["login_id"], Request["login_pwd"]);
+                    error_message = Login(Request["login_id"], m1.getMD5(Request["login_pwd"]));
                     System.Diagnostics.Debug.WriteLine(error_message);
                     Response.Write(error_message);
                     return View();
                 case "register":
-                    error_message = Register(Request["register_id"], Request["register_pwd"]);
+                    error_message = Register(Request["register_id"], m1.getMD5(Request["register_pwd"]));
                     System.Diagnostics.Debug.WriteLine(error_message);
                     Response.Write(error_message);
                     return View();

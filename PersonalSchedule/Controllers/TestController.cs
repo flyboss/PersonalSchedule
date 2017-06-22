@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ModelLib;
 using SeviceLib;
+using EncryptLib;
 namespace PersonalSchedule.Controllers
 {
     public class TestController : Controller
@@ -16,6 +17,12 @@ namespace PersonalSchedule.Controllers
             var eContentList=SerachService.serachContent(db, "123");
             var mylist = SerachService.serachRank(db, "123");
             return View();
+        }
+        public JsonResult SendData()
+        {
+            myMD5 m1 = new myMD5();
+            string str = m1.getMD5("123123");
+            return Json(new { UserName = str, Age = 14 });
         }
     }
 }
