@@ -10,11 +10,18 @@ var executeMyClndr = function (eventArray) {
     // clndr will respect whatever moment's language is set to.
     // moment.locale('ru');
 
-    eventArray.sort(function (a, b) {
-        if (a.date == b.date) {
-            return a.time > b.time
-        }
-        return a.date > b.date
+    eventArray = eventArray.sort(function (a, b) {
+        aDate = a.date.split("-");
+        aTime = a.time.split("-")[0].split(":");
+        aDate = Number(aDate[0] + aDate[1] + aDate[2] + aTime[0] + aTime[1]);
+        bDate = b.date.split("-");
+        bTime = b.time.split("-")[0].split(":");
+        bDate = Number(bDate[0] + bDate[1] + bDate[2] + bTime[0] + bTime[1]);
+        console.log(aDate, bDate, aDate - bDate);
+        return aDate - bDate;
+    })
+    eventArray.forEach(function (e) {
+        console.log(e);
     })
     // The order of the click handlers is predictable. Direct click action
     // callbacks come first: click, nextMonth, previousMonth, nextYear,
@@ -92,7 +99,7 @@ var executeMyClndr = function (eventArray) {
                                 <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\
                                     &times;\
                 </button>\
-                <h3 class=\"modal-title\"><%= temp_date %>的节目单</h3>\
+                <h3 class=\"modal-title\"><%= temp_date %>的活动单</h3>\
             </div>\
             <div class=\"modal-body\">\
                 <div class=\"form-horizontal\" role=\"form\">\
